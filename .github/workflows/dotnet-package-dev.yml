@@ -1,0 +1,39 @@
+name: Publish NuGet package to GitHub Packages
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read 
+  packages: write
+
+jobs:
+  dotnet-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Pack
+        run: | 
+          BASE_VERSION=$(dotnet msbuild -nologo -t:GetVersion -v:q 2>/dev/null || grep '<Version>' *.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')
+          PRERELEASE="${BASE_VERSION}-alpha"
+          dotnet pack --configuration Release --no-build --output ./artifacts /p:PackageVersion=$PRERELEASE
+
+      - name: Push .nupkg to GitHub Packages
+        uses: ./.github/actions/push-to-github-nuget
+        with:
+          nupkg-folder: ./artifacts

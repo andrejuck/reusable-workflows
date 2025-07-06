@@ -1,0 +1,24 @@
+name: Push .nupkg to GitHub Packages
+description: Publish .nupkg packages to GitHub NuGet registry
+
+inputs:
+  nupkg-folder:
+    description: Diretory path containing .nupkg files
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Push .nupkg to GitHub Packages
+      shell: bash
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.PACKAGE_GITHUB_TOKEN }}
+      run: |
+        OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+        for PACKAGE in "${{ inputs.nupkg-folder }}"/*.nupkg; do
+          echo "🚀 Publicando $PACKAGE"
+          dotnet nuget push "$PACKAGE" \
+            --source "https://nuget.pkg.github.com/$OWNER_LOWER/index.json" \
+            --api-key "$NUGET_AUTH_TOKEN" \
+            --skip-duplicate
+        done

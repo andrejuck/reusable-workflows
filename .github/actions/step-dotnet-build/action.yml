@@ -1,0 +1,28 @@
+name: Build dotnet
+description: Setup, restore dependencies and build dotnet app
+
+inputs:
+  working-dir:
+    description: Diretory path containing sln file
+    required: true
+    type: string
+  dotnet-version:
+    required: false
+    default: 8
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '${{ inputs.dotnet-version }}.0.x'
+
+    - name: Restore
+      run: dotnet restore
+      working-directory: ${{ inputs.working-dir }}
+
+    - name: Build (Release)
+      run: dotnet build --configuration Release --no-restore
+      working-directory: ${{ inputs.working-dir }}

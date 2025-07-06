@@ -1,9 +1,12 @@
 name: Publish NuGet package to GitHub Packages
 
 on:
-  push:
-    branches:
-      - develop
+  worklow_call:
+    inputs:
+      working-dir:
+        description: Diretory path containing sln file
+        required: true
+        type: string
 
 permissions:
   contents: read 
@@ -16,16 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - name: Build dotnet
+        uses: ./.github/actions/step-dotnet-build
         with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore
-        run: dotnet restore
-
-      - name: Build (Release)
-        run: dotnet build --configuration Release --no-restore
+          nupkg-folder: ./artifacts
+          working-dir: ${{ inputs.working-dir }}
 
       - name: Pack
         run: | 
@@ -34,6 +32,6 @@ jobs:
           dotnet pack --configuration Release --no-build --output ./artifacts /p:PackageVersion=$PRERELEASE
 
       - name: Push .nupkg to GitHub Packages
-        uses: ./.github/actions/push-to-github-nuget
+        uses: ./.github/actions/step-dotnet-push-nuget
         with:
           nupkg-folder: ./artifacts

@@ -1,7 +1,7 @@
 name: Publish NuGet package to GitHub Packages
 
 on:
-  worklow_call:
+  workflow_call:
     inputs:
       working-dir:
         description: Diretory path containing sln file

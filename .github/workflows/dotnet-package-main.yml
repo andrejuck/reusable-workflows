@@ -25,10 +25,14 @@ jobs:
           nupkg-folder: ./artifacts
           working-dir: ${{ inputs.working-dir }}
 
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+        working-directory: ${{ inputs.working-dir }}
+
       - name: Pack
         run: dotnet pack --configuration Release --no-build --output ./artifacts
 
       - name: Push .nupkg to GitHub Packages
-        uses: ./.github/actions/push-to-github-nuget
+        uses: ./.github/actions/step-dotnet-push-nuget
         with:
           nupkg-folder: ./artifacts

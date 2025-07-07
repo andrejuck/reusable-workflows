@@ -5,9 +5,10 @@ inputs:
   working-dir:
     description: Diretory path containing sln file
     required: true
-    type: string
+  
   dotnet-version:
     required: false
+    type: number
     default: 8
 
 runs:

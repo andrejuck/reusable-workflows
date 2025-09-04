@@ -34,6 +34,6 @@ jobs:
           dotnet pack --configuration Release --no-build --output ./artifacts /p:VersionSuffix=alpha.${{ github.run_number }}
 
       - name: Push .nupkg to GitHub Packages
-        uses: ./.github/actions/step-dotnet-push-nuget
+        uses: andrejuck/reusable-workflows/.github/actions/step-dotnet-push-nuget@main
         with:
           nupkg-folder: ./artifacts

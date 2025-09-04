@@ -5,7 +5,6 @@ inputs:
   nupkg-folder:
     description: Diretory path containing .nupkg files
     required: true
-    default: ./nupkgs
 
 runs:
   using: "composite"

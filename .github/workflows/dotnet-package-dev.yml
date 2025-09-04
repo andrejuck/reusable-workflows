@@ -22,7 +22,6 @@ jobs:
       - name: Build dotnet
         uses: ./.github/actions/step-dotnet-build
         with:
-          nupkg-folder: ./artifacts
           working-dir: ${{ inputs.working-dir }}
 
       - name: Pack

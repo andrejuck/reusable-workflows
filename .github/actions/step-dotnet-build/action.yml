@@ -9,6 +9,9 @@ inputs:
     description: Dotnet version
     required: false
     default: "8"
+  github-token:
+    description: Github token
+    required: true
 
 runs:
   using: "composite"
@@ -20,7 +23,7 @@ runs:
         dotnet-version: '${{ inputs.dotnet-version }}.0.x'
         source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
       env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NUGET_AUTH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
 
     - name: Restore
       shell: sh

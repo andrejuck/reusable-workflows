@@ -1,4 +1,4 @@
-name: Publish NuGet package to GitHub Packages
+name: Publish NuGet package LTS to GitHub Packages
 
 on:
   workflow_call:
@@ -7,6 +7,9 @@ on:
         description: Diretory path containing sln file
         required: true
         type: string
+    secrets:
+      github-token:
+        required: true
 
 permissions:
   contents: read 
@@ -22,8 +25,8 @@ jobs:
       - name: Build dotnet
         uses: ./.github/actions/step-dotnet-build
         with:
-          nupkg-folder: ./artifacts
           working-dir: ${{ inputs.working-dir }}
+          github-token: ${{ secrets.github-token }}
 
       - name: Pack
         run: dotnet pack --configuration Release --no-build --output ./artifacts
@@ -32,3 +35,4 @@ jobs:
         uses: ./.github/actions/step-dotnet-push-nuget
         with:
           nupkg-folder: ./artifacts
+          github-token: ${{ secrets.github-token }}

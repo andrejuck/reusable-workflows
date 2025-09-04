@@ -30,9 +30,7 @@ jobs:
 
       - name: Pack
         run: | 
-          BASE_VERSION=$(dotnet msbuild -nologo -t:GetVersion -v:q 2>/dev/null || grep '<Version>' *.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')
-          PRERELEASE="${BASE_VERSION}-alpha"
-          dotnet pack --configuration Release --no-build --output ./artifacts /p:PackageVersion=$PRERELEASE
+          dotnet pack --configuration Release --no-build --output ./artifacts /p:VersionSuffix=alpha.${{ github.run_number }}
 
       - name: Push .nupkg to GitHub Packages
         uses: ./.github/actions/step-dotnet-push-nuget

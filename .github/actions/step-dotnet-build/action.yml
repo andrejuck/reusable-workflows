@@ -5,11 +5,10 @@ inputs:
   working-dir:
     description: Diretory path containing sln file
     required: true
-  
   dotnet-version:
+    description: Dotnet version
     required: false
-    type: number
-    default: 8
+    default: "8"
 
 runs:
   using: "composite"
@@ -21,9 +20,11 @@ runs:
         dotnet-version: '${{ inputs.dotnet-version }}.0.x'
 
     - name: Restore
+      shell: sh
       run: dotnet restore
       working-directory: ${{ inputs.working-dir }}
 
     - name: Build (Release)
+      shell: sh
       run: dotnet build --configuration Release --no-restore
       working-directory: ${{ inputs.working-dir }}

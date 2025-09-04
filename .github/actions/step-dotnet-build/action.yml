@@ -1,4 +1,4 @@
-name: Build dotnet
+name: Build & Test dotnet
 description: Setup, restore dependencies and build dotnet app
 
 inputs:
@@ -27,4 +27,9 @@ runs:
     - name: Build (Release)
       shell: sh
       run: dotnet build --configuration Release --no-restore
+      working-directory: ${{ inputs.working-dir }}
+
+    - name: Run tests
+      shell: sh
+      run: dotnet test --no-build --verbosity normal
       working-directory: ${{ inputs.working-dir }}

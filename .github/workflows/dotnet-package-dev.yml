@@ -37,3 +37,4 @@ jobs:
         uses: andrejuck/reusable-workflows/.github/actions/step-dotnet-push-nuget@main
         with:
           nupkg-folder: ./artifacts
+          working-dir: ${{ inputs.working-dir }}

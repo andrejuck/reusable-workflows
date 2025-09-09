@@ -15,6 +15,9 @@ inputs:
   unit-tests-csproj:
     description: Unit Tests csproj path with working-dir root
     required: false
+  ssl-testing:
+    required: false
+    description: "Needs to install OpenSSL1.1?"
 
 
 runs:
@@ -38,6 +41,15 @@ runs:
       shell: sh
       run: dotnet build --configuration Release --no-restore
       working-directory: ${{ inputs.working-dir }}
+
+    #TODO - Add openSSL 1.1 cache
+    #OpenSSL1.1 dependency must use ubuntu 20.04, latest versions use the following step
+    - name: Install OpenSSL 1.1 compatibility
+      if: ${{ inputs.ssl-testing }}
+      shell: sh
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libssl1.1 || true
 
     - name: Run tests
       if: ${{ inputs.unit-tests-csproj }}

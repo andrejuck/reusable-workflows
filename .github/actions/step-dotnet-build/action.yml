@@ -42,5 +42,5 @@ runs:
     - name: Run tests
       if: ${{ inputs.unit-tests-csproj }}
       shell: sh
-      run: dotnet test ${{ inputs.unit-tests-csproj }} --no-build --verbosity normal
+      run: dotnet test ${{ inputs.unit-tests-csproj }} --no-build --configuration Release
       working-directory: ${{ inputs.working-dir }}

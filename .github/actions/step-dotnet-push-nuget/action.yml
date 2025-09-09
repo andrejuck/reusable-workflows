@@ -20,7 +20,7 @@ runs:
       run: |
         OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
         for PACKAGE in "${{ inputs.nupkg-folder }}"/*.nupkg; do
-          echo "Publicando $PACKAGE"
+          echo "Publishing $PACKAGE"
           dotnet nuget push "$PACKAGE" \
             --source "https://nuget.pkg.github.com/$OWNER_LOWER/index.json" \
             --api-key ${{ inputs.github-token }} \

@@ -12,6 +12,10 @@ inputs:
   github-token:
     description: Github token
     required: true
+  unit-tests-csproj:
+    description: Unit Tests csproj path with working-dir root
+    required: false
+
 
 runs:
   using: "composite"
@@ -36,6 +40,7 @@ runs:
       working-directory: ${{ inputs.working-dir }}
 
     - name: Run tests
+      if: ${{ inputs.unit-tests-csproj }}
       shell: sh
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ${{ inputs.working-dir }}/${{ inputs.unit-tests-csproj }} --no-build --verbosity normal
       working-directory: ${{ inputs.working-dir }}

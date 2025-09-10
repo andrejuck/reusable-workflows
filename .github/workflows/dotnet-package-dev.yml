@@ -7,6 +7,10 @@ on:
         description: Diretory path containing sln file
         required: true
         type: string
+      csproj-file:
+        description: Csproj path file name
+        type: string
+        required: true
     secrets:
       github-token:
         required: true
@@ -31,7 +35,7 @@ jobs:
       - name: Extract version from csproj
         id: get_version
         run: |
-          VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" code/Expenses.Api/Expenses.Api.csproj)
+          VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" ${{ inputs.working-dir }}/${{ inputs.csproj-file }})
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Pack

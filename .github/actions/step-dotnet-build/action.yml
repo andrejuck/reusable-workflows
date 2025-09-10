@@ -19,7 +19,6 @@ inputs:
     required: false
     description: "Needs to install OpenSSL1.1?"
 
-
 runs:
   using: "composite"
   steps:
@@ -48,8 +47,17 @@ runs:
       if: ${{ inputs.ssl-testing }}
       shell: sh
       run: |
-        sudo apt-get update
-        sudo apt-get install -y libssl1.1 || true
+        if [ ! -d /usr/local/openssl-1.1.1 ]; then
+          sudo apt update
+          sudo apt install -y build-essential wget
+          wget https://www.openssl.org/source/openssl-1.1.1u.tar.gz
+          tar -xvf openssl-1.1.1u.tar.gz
+          cd openssl-1.1.1u
+          ./config
+          make
+          sudo make install
+          sudo ldconfig
+        fi
 
     - name: Run tests
       if: ${{ inputs.unit-tests-csproj }}

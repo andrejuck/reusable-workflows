@@ -28,10 +28,16 @@ jobs:
           working-dir: ${{ inputs.working-dir }}
           github-token: ${{ secrets.github-token }}
 
+      - name: Extract version from csproj
+        id: get_version
+        run: |
+          VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" code/Expenses.Api/Expenses.Api.csproj)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Pack
         working-directory: ${{ inputs.working-dir }}
         run: | 
-          dotnet pack --configuration Release --no-build --output ./artifacts /p:VersionSuffix=alpha.${{ github.run_number }}
+          dotnet pack --configuration Release --no-build --output ./artifacts /p:Version=${{steps.get_version.outputs.version}}-alpha.${{ github.run_number }}
 
       - name: Push .nupkg to GitHub Packages
         uses: andrejuck/reusable-workflows/.github/actions/step-dotnet-push-nuget@main

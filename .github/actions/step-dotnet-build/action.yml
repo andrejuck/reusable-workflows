@@ -50,48 +50,48 @@ runs:
           ~/.cache/openssl-src
         key: openssl-1.1.1u-${{ runner.os }}
 
-    - name: Install OpenSSL 1.1 compatibility
-      if: ${{ inputs.ssl-testing }}
-      shell: sh
-      run: |
-        if [ ! -d /usr/local/openssl-1.1.1 ]; then
-          echo "OpenSSL 1.1 not found in cache — building..."
-          mkdir -p ~/.cache/openssl-src
-          cd ~/.cache/openssl-src
-
-          if [ ! -f openssl-1.1.1u.tar.gz ]; then
-            sudo apt update
-            sudo apt install -y build-essential wget
-            wget https://www.openssl.org/source/openssl-1.1.1u.tar.gz
-          fi
-
-          tar -xvf openssl-1.1.1u.tar.gz
-          cd openssl-1.1.1u
-          ./config --prefix=/usr/local/openssl-1.1.1
-          make
-          sudo make install
-          sudo ldconfig
-        else
-          echo "✅ OpenSSL 1.1 restored from cache."
-        fi
-      
-    #TODO - Add openSSL 1.1 cache
-    #OpenSSL1.1 dependency must use ubuntu 20.04, latest versions use the following step
     # - name: Install OpenSSL 1.1 compatibility
     #   if: ${{ inputs.ssl-testing }}
     #   shell: sh
     #   run: |
     #     if [ ! -d /usr/local/openssl-1.1.1 ]; then
-    #       sudo apt update
-    #       sudo apt install -y build-essential wget
-    #       wget https://www.openssl.org/source/openssl-1.1.1u.tar.gz
+    #       echo "OpenSSL 1.1 not found in cache — building..."
+    #       mkdir -p ~/.cache/openssl-src
+    #       cd ~/.cache/openssl-src
+
+    #       if [ ! -f openssl-1.1.1u.tar.gz ]; then
+    #         sudo apt update
+    #         sudo apt install -y build-essential wget
+    #         wget https://www.openssl.org/source/openssl-1.1.1u.tar.gz
+    #       fi
+
     #       tar -xvf openssl-1.1.1u.tar.gz
     #       cd openssl-1.1.1u
-    #       ./config
+    #       ./config --prefix=/usr/local/openssl-1.1.1
     #       make
     #       sudo make install
     #       sudo ldconfig
+    #     else
+    #       echo "✅ OpenSSL 1.1 restored from cache."
     #     fi
+      
+    #TODO - Add openSSL 1.1 cache
+    #OpenSSL1.1 dependency must use ubuntu 20.04, latest versions use the following step
+    - name: Install OpenSSL 1.1 compatibility
+      if: ${{ inputs.ssl-testing }}
+      shell: sh
+      run: |
+        if [ ! -d /usr/local/openssl-1.1.1 ]; then
+          sudo apt update
+          sudo apt install -y build-essential wget
+          wget https://www.openssl.org/source/openssl-1.1.1u.tar.gz
+          tar -xvf openssl-1.1.1u.tar.gz
+          cd openssl-1.1.1u
+          ./config
+          make
+          sudo make install
+          sudo ldconfig
+        fi
 
     - name: Run tests
       if: ${{ inputs.unit-tests-csproj }}

@@ -5,19 +5,25 @@ inputs:
   working-dir:
     description: Diretory path containing sln file
     required: true
+  github-token:
+    description: Github token
+    required: true
+  app-name:
+    description: App name
+    required: true
   dotnet-version:
     description: Dotnet version
     required: false
     default: "8"
-  github-token:
-    description: Github token
-    required: true
   unit-tests-csproj:
     description: Unit Tests csproj path with working-dir root
     required: false
   ssl-testing:
     required: false
     description: "Needs to install OpenSSL1.1?"
+  publish-artifact:
+    description: Publish artifact in github
+    required: false
 
 runs:
   using: "composite"
@@ -98,3 +104,16 @@ runs:
       shell: sh
       run: dotnet test ${{ inputs.unit-tests-csproj }} --no-build --configuration Release
       working-directory: ${{ inputs.working-dir }}
+
+    - name: Dotnet publish
+      if: ${{ inputs.publish-artifact }}
+      shell: sh
+      run: dotnet publish -c Release -o ./publish
+      working-directory: ${{ inputs.working-dir }}
+
+    - name: Upload artifact
+      if: ${{ inputs.publish-artifact }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.app-name }}
+        path: ./publish

@@ -1,0 +1,50 @@
+name: Build and Publish image
+
+on:
+  workflow_call:
+    inputs:
+      working-dir:
+        description: Diretory path containing sln file
+        required: true
+        type: string
+      image-tag:
+        description: Repository image tag
+        default: latest-snapshot
+        type: string
+    secrets:
+      github-token:
+        required: true
+      docker-hub-username:
+        required: true
+      docker-hub-password:
+        required: true
+      docker-hub-repository:
+        required: true
+
+jobs:
+  dotnet-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build dotnet
+        uses: ./.github/actions/step-dotnet-build
+        with:
+          working-dir: ${{ inputs.working-dir }}
+          github-token: ${{ secrets.github-token }}
+
+  docker-hub-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and Push image
+        uses: ./.github/actions/step-push-dockerhub-image
+        with:
+          docker-hub-username: ${{ secrets.docker-hub-username }}
+          docker-hub-password: ${{ secrets.docker-hub-password }}
+          docker-hub-repository: ${{ secrets.docker-hub-repository }}
+          image-tag: ${{ inputs.image-tag }}
+
+
+    

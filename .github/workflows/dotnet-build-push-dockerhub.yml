@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build dotnet
-        uses: ./.github/actions/step-dotnet-build
+        uses: andrejuck/reusable-workflows/.github/actions/step-dotnet-build@main
         with:
           working-dir: ${{ inputs.working-dir }}
           github-token: ${{ secrets.github-token }}
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build and Push image
-        uses: ./.github/actions/step-push-dockerhub-img
+        uses: andrejuck/reusable-workflows/.github/actions/step-push-dockerhub-img@main
         with:
           docker-hub-username: ${{ secrets.docker-hub-username }}
           docker-hub-token: ${{ secrets.docker-hub-token }}

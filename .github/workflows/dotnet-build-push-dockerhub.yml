@@ -46,11 +46,6 @@ jobs:
           working-dir: ${{ inputs.working-dir }}
           github-token: ${{ secrets.github-token }}
 
-  docker-hub-publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
       - name: Build and Push image
         uses: andrejuck/reusable-workflows/.github/actions/step-push-dockerhub-img@main
         with:
@@ -58,6 +53,3 @@ jobs:
           docker-hub-token: ${{ secrets.docker-hub-token }}
           docker-hub-repository: ${{ secrets.docker-hub-repository }}
           image-tag: ${{ inputs.image-tag }}
-
-
-    

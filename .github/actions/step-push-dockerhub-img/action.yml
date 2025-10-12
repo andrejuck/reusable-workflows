@@ -5,7 +5,7 @@ inputs:
   docker-hub-username:
     description: Docker hub username
     required: true
-  docker-hub-password:
+  docker-hub-token:
     description: Docker hub user password
     required: true
   docker-hub-repository:
@@ -28,7 +28,7 @@ runs:
       uses: docker/login-action@v3
       with:
         username: ${{ inputs.docker-hub-username }}
-        password: ${{ inputs.docker-hub-password }}
+        password: ${{ inputs.docker-hub-token }}
 
     - name: Build and push image
       uses: docker/build-push-action@v6

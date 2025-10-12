@@ -16,10 +16,6 @@ on:
         required: false
         default: "8"
         type: string
-      github-token:
-        description: Github token
-        required: true
-        type: string
       unit-tests-csproj:
         description: Unit Tests csproj path with working-dir root
         required: false
@@ -33,7 +29,7 @@ on:
         required: true
       docker-hub-username:
         required: true
-      docker-hub-password:
+      docker-hub-token:
         required: true
       docker-hub-repository:
         required: true
@@ -59,7 +55,7 @@ jobs:
         uses: ./.github/actions/step-push-dockerhub-img
         with:
           docker-hub-username: ${{ secrets.docker-hub-username }}
-          docker-hub-password: ${{ secrets.docker-hub-password }}
+          docker-hub-token: ${{ secrets.docker-hub-token }}
           docker-hub-repository: ${{ secrets.docker-hub-repository }}
           image-tag: ${{ inputs.image-tag }}
 

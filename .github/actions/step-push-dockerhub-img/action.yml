@@ -45,6 +45,6 @@ runs:
         context: .
         file: ./Dockerfile
         push: true
+        platforms: linux/amd64,linux/arm64
         tags: |
           ${{ inputs.docker-hub-username }}/${{ inputs.docker-hub-repository }}:${{ inputs.image-tag }}
-          ${{ inputs.docker-hub-username }}/${{ inputs.docker-hub-repository }}:${{ github.sha }}

@@ -24,6 +24,10 @@ inputs:
   publish-artifact:
     description: Publish artifact in github
     required: false
+  linux-arch:
+    description: Linux base architecture
+    required: false
+    default: linux-x64
 
 runs:
   using: "composite"
@@ -108,7 +112,7 @@ runs:
     - name: Dotnet publish
       if: ${{ inputs.publish-artifact }}
       shell: sh
-      run: dotnet publish -c Release -o ./publish
+      run: dotnet publish -c Release -o ./publish -r {{ inputs.linux-arch }}
       working-directory: ${{ inputs.working-dir }}
 
     - name: Upload artifact

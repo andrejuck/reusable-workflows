@@ -33,6 +33,10 @@ on:
         description: Publish artifact in github
         required: false
         type: boolean
+      linux-arch:
+        description: "Linux architecture"
+        required: false
+        type: string
     secrets:
       github-token:
         required: true
@@ -56,6 +60,7 @@ jobs:
           github-token: ${{ secrets.github-token }}
           app-name: ${{ inputs.app-name }}
           publish-artifact: ${{ inputs.publish-artifact }}
+          linux-arch: ${{ inputs.linux-arch }}
 
   docker-hub-publish:
     runs-on: ubuntu-latest

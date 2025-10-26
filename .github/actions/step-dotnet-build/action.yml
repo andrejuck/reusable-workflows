@@ -112,7 +112,7 @@ runs:
     - name: Dotnet publish
       if: ${{ inputs.publish-artifact }}
       shell: sh
-      run: dotnet publish -c Release -o ./publish -r {{ inputs.linux-arch }}
+      run: dotnet publish -c Release -o ./publish -r ${{ inputs.linux-arch }}
       working-directory: ${{ inputs.working-dir }}
 
     - name: Upload artifact

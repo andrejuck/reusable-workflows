@@ -14,6 +14,9 @@ inputs:
   docker-hub-repository:
     description: Docker hub app repository
     required: true
+  github-token:
+    description: Github token
+    required: true
   image-tag:
     description: Repository tags
     default: latest-snapshot
@@ -46,5 +49,7 @@ runs:
         file: ./Dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
+        build-args: |
+          NUGET_TOKEN=${{ inputs.github-token }}
         tags: |
           ${{ inputs.docker-hub-username }}/${{ inputs.docker-hub-repository }}:${{ inputs.image-tag }}

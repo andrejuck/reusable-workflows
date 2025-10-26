@@ -76,3 +76,4 @@ jobs:
           docker-hub-repository: ${{ secrets.docker-hub-repository }}
           image-tag: ${{ inputs.image-tag }}
           app-name: ${{ inputs.app-name }}
+          github-token: ${{ secrets.github-token}}

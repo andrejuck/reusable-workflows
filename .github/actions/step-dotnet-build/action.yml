@@ -53,7 +53,7 @@ runs:
 
     - name: Cache OpenSSL 1.1
       id: cache-openssl
-      if: ${{ inputs.ssl-testing }}
+      if: ${{ inputs.ssl-testing == true }}
       uses: actions/cache@v4
       with:
         path: |
@@ -89,7 +89,7 @@ runs:
     #TODO - Add openSSL 1.1 cache
     #OpenSSL1.1 dependency must use ubuntu 20.04, latest versions use the following step
     - name: Install OpenSSL 1.1 compatibility
-      if: ${{ inputs.ssl-testing }}
+      if: ${{ inputs.ssl-testing == true }}
       shell: sh
       run: |
         if [ ! -d /usr/local/openssl-1.1.1 ]; then

@@ -40,18 +40,20 @@ on:
     secrets:
       github-token:
         required: true
-      docker-hub-username:
+      username:
         required: true
-      docker-hub-token:
+      token:
         required: true
-      docker-hub-repository:
+      image-repository:
+        required: true
+      image-registry:
         required: true
 
 jobs:
   dotnet-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build dotnet
         uses: andrejuck/reusable-workflows/.github/actions/step-dotnet-build@main
@@ -62,18 +64,19 @@ jobs:
           publish-artifact: ${{ inputs.publish-artifact }}
           linux-arch: ${{ inputs.linux-arch }}
 
-  docker-hub-publish:
+  docker-build-push:
     runs-on: ubuntu-latest
     needs: dotnet-build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build and Push image
-        uses: andrejuck/reusable-workflows/.github/actions/step-push-dockerhub-img@main
+        uses: andrejuck/reusable-workflows/.github/actions/step-build-push-img@main
         with:
-          docker-hub-username: ${{ secrets.docker-hub-username }}
-          docker-hub-token: ${{ secrets.docker-hub-token }}
-          docker-hub-repository: ${{ secrets.docker-hub-repository }}
-          image-tag: ${{ inputs.image-tag }}
+          username: ${{ secrets.username }}
+          token: ${{ secrets.token }}
+          image-repository: ${{ secrets.image-repository }}
+          image-registry: ${{ secrets.image-registry }}
+          image-tag: 'latest'
           app-name: ${{ inputs.app-name }}
           github-token: ${{ secrets.github-token}}

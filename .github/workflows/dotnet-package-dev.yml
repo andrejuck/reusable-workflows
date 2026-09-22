@@ -49,3 +49,5 @@ jobs:
           nupkg-folder: ./artifacts
           working-dir: ${{ inputs.working-dir }}
           github-token: ${{ secrets.github-token }}
+          
+  

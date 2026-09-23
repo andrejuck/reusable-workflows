@@ -56,4 +56,4 @@ runs:
         build-args: |
           NUGET_TOKEN=${{ inputs.github-token }}
         tags: |
-          ${{ inputs.username }}/${{ inputs.image-repository }}:${{ inputs.image-tag }}
+          ${{ inputs.image-repository }}:${{ inputs.image-tag }}

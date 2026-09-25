@@ -7,10 +7,6 @@ on:
         description: Diretory path containing sln file
         required: true
         type: string
-      csproj-file:
-        description: Csproj path file name
-        type: string
-        required: true
     secrets:
       github-token:
         required: true
